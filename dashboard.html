@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>لوحة فصل الشهيد العظيم مار جرجس — سنة 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --paper: #fffdf9;
+    --paper-2: #f6efe3;
+    --maroon: #7a1530;
+    --maroon-deep: #4d0d1f;
+    --maroon-bright: #a5203f;
+    --gold: #c9a86a;
+    --gold-bright: #e3c589;
+    --ink: #2b1015;
+    --ink-soft: #6b4a52;
+    --line: #e8d9c3;
+    --shadow: rgba(74, 13, 31, 0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: 'Cairo', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  body {
+    background:
+      radial-gradient(ellipse 900px 500px at 8% -5%, rgba(165, 32, 63, 0.07), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(201, 168, 106, 0.12), transparent 55%),
+      var(--paper);
+    padding: 0 0 40px;
+  }
+
+  /* ---------- Top identity band ---------- */
+  .identity-band {
+    background: linear-gradient(120deg, var(--maroon-deep), var(--maroon) 55%, var(--maroon-deep));
+    color: #fbeee0;
+    padding: env(safe-area-inset-top, 14px) 20px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .identity-band::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 14px);
+    pointer-events: none;
+  }
+  .identity-band .cross {
+    color: var(--gold-bright);
+    font-size: 16px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .identity-band .church {
+    font-weight: 800;
+    font-size: clamp(15px, 2.4vw, 20px);
+    letter-spacing: 0.2px;
+  }
+  .identity-band .class {
+    font-size: clamp(12px, 1.6vw, 14.5px);
+    color: #e9c9a9;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 16px 0;
+  }
+  .nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1.5px solid var(--line);
+    color: var(--ink-soft);
+    background: var(--paper);
+  }
+  .nav-pill.active {
+    background: var(--maroon);
+    color: #fdf3e6;
+    border-color: var(--maroon);
+  }
+
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 18px;
+  }
+
+  /* ---------- Hero: verse of the day ---------- */
+  .verse-hero {
+    margin-top: 26px;
+    background: linear-gradient(155deg, var(--maroon) 0%, var(--maroon-deep) 100%);
+    border-radius: 22px;
+    padding: clamp(28px, 5vw, 48px) clamp(20px, 5vw, 44px);
+    text-align: center;
+    color: #fdf3e6;
+    position: relative;
+    box-shadow: 0 18px 40px var(--shadow);
+    overflow: hidden;
+  }
+  .verse-hero::before {
+    content: "”";
+    position: absolute;
+    top: -30px;
+    right: 10px;
+    font-family: 'Amiri', serif;
+    font-size: 220px;
+    color: rgba(255,255,255,0.05);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .verse-hero .eyebrow {
+    font-size: clamp(11.5px, 1.4vw, 13.5px);
+    color: var(--gold-bright);
+    font-weight: 700;
+    margin: 0 0 14px;
+    letter-spacing: 0.3px;
+  }
+  .verse-hero .verse-text {
+    font-family: 'Amiri', serif;
+    font-size: clamp(22px, 4vw, 34px);
+    line-height: 1.7;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .verse-hero .verse-ref {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: clamp(13px, 1.6vw, 15px);
+    color: var(--gold-bright);
+    font-weight: 700;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding-top: 14px;
+  }
+
+  /* ---------- Section title ---------- */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 0 16px;
+  }
+  .section-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--maroon);
+    flex-shrink: 0;
+  }
+  .section-title h2 {
+    font-size: clamp(17px, 2.2vw, 21px);
+    font-weight: 800;
+    margin: 0;
+    color: var(--maroon-deep);
+  }
+  .section-title .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ---------- Announcements ---------- */
+  .announce-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .announce-card {
+    background: var(--paper-2);
+    border-radius: 14px;
+    border-right: 4px solid var(--maroon);
+    padding: 16px 18px;
+    font-size: 14.5px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+  .announce-card b, .announce-card strong { color: var(--maroon-deep); }
+  .announce-empty {
+    background: var(--paper-2);
+    border-radius: 14px;
+    padding: 20px 18px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  /* ---------- Two column area (exam / whatsapp) ---------- */
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  @media (max-width: 620px) {
+    .action-row { grid-template-columns: 1fr; }
+  }
+  .action-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 20px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .action-card:hover {
+    border-color: var(--maroon);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px var(--shadow);
+  }
+  .action-card .icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .action-card.exam .icon { background: rgba(122, 21, 48, 0.1); }
+  .action-card.whatsapp .icon { background: rgba(37, 138, 76, 0.12); }
+  .action-card .txt { flex: 1; }
+  .action-card .txt .title { font-weight: 800; font-size: 15px; margin: 0 0 2px; }
+  .action-card .txt .sub { font-size: 12.5px; color: var(--ink-soft); margin: 0; }
+  .action-card .arrow { font-size: 18px; color: var(--gold); flex-shrink: 0; }
+
+  /* ---------- Honor roll ---------- */
+  .honor-wrap {
+    background: linear-gradient(180deg, #fffaf1, var(--paper-2));
+    border: 2px solid var(--gold);
+    border-radius: 20px;
+    padding: clamp(20px, 4vw, 32px);
+    position: relative;
+    overflow: hidden;
+  }
+  .honor-wrap::before {
+    content: "🏆";
+    position: absolute;
+    font-size: 130px;
+    opacity: 0.05;
+    top: -24px;
+    left: -10px;
+    pointer-events: none;
+  }
+  .honor-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .honor-head h3 {
+    margin: 0;
+    font-size: clamp(17px, 2.2vw, 20px);
+    color: var(--maroon-deep);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .honor-meta {
+    font-size: 12px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #2f9e5c;
+    display: inline-block;
+    animation: livePulse 1.8s ease-in-out infinite;
+  }
+  @keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(47,158,92,0.5); }
+    50% { box-shadow: 0 0 0 5px rgba(47,158,92,0); }
+  }
+
+  .honor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+  }
+  .honor-item {
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: itemIn 0.4s ease both;
+  }
+  @keyframes itemIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .honor-item .medal {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .honor-item .name {
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .honor-item .score-tag {
+    display: block;
+    font-size: 11px;
+    color: var(--maroon);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .honor-empty {
+    text-align: center;
+    padding: 30px 14px;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+  .honor-empty .big { font-size: 36px; display: block; margin-bottom: 8px; }
+
+  .honor-error {
+    text-align: center;
+    padding: 20px 14px;
+    color: var(--maroon);
+    font-size: 13px;
+    background: rgba(165,32,63,0.06);
+    border-radius: 12px;
+  }
+
+  footer.page-footer {
+    text-align: center;
+    margin-top: 44px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 12px;
+  }
+  footer.page-footer .cross { color: var(--gold); margin: 0 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="identity-band">
+  <span class="cross">✝</span>
+  <div class="church">كاتدرائية الشهيد العظيم مار جرجس بمدينة العاشر من رمضان</div>
+  <div class="class">خدمة مرحلة الطفولة — فصل الشهيد العظيم مار جرجس سنة 6</div>
+</div>
+
+<div class="nav-row">
+  <a class="nav-pill active" href="#">🏠 الرئيسية</a>
+  <a class="nav-pill" href="lessons.html">📖 الدروس</a>
+</div>
+
+<div class="wrap">
+
+  <!-- Verse of the day -->
+  <div class="verse-hero">
+    <p class="eyebrow">آية اليوم</p>
+    <p class="verse-text" id="verseText">الرب يقاتل عنكم وأنتم تصمتون</p>
+    <span class="verse-ref" id="verseRef">خروج 14 : 14</span>
+  </div>
+
+  <!-- Announcements -->
+  <div class="section-title">
+    <span class="dot"></span>
+    <h2>تنبيهات مهمة</h2>
+    <span class="rule"></span>
+  </div>
+  <div class="announce-list" id="announceList">
+    <!-- تُملأ من قائمة announcements تحت في الكود -->
+  </div>
+
+  <!-- Quick actions -->
+  <div class="section-title">
+    <span class="dot"></span>
+    <h2>روابط سريعة</h2>
+    <span class="rule"></span>
+  </div>
+  <div class="action-row">
+    <a class="action-card exam" href="#" id="examLink" target="_blank" rel="noopener">
+      <span class="icon">📝</span>
+      <span class="txt">
+        <p class="title">امتحان الدرس</p>
+        <p class="sub">رحلة بني إسرائيل في البرية</p>
+      </span>
+      <span class="arrow">←</span>
+    </a>
+    <a class="action-card whatsapp" href="#" id="whatsappLink" target="_blank" rel="noopener">
+      <span class="icon">💬</span>
+      <span class="txt">
+        <p class="title">تواصل معانا</p>
+        <p class="sub">جروب الواتساب</p>
+      </span>
+      <span class="arrow">←</span>
+    </a>
+  </div>
+
+  <!-- Honor roll -->
+  <div class="section-title">
+    <span class="dot"></span>
+    <h2>لوحة الشرف — الدرجة النهائية 🏆</h2>
+    <span class="rule"></span>
+  </div>
+  <div class="honor-wrap">
+    <div class="honor-head">
+      <h3>🏆 أبطال الدرجة الكاملة</h3>
+      <span class="honor-meta"><span class="live-dot"></span> بيتحدّث أوتوماتيك</span>
+    </div>
+    <div id="honorContent">
+      <div class="honor-empty">
+        <span class="big">⏳</span>
+        بنجيب النتائج دلوقتي...
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <span class="cross">✝</span> كاتدرائية الشهيد العظيم مار جرجس بمدينة العاشر من رمضان <span class="cross">✝</span>
+    <br>خدمة مرحلة الطفولة — فصل الشهيد العظيم مار جرجس سنة 6
+  </footer>
+
+</div>
+
+<script>
+  /* ============================================================
+     الإعدادات — عدّل هنا بس
+     ============================================================ */
+
+  // رابط الـ Google Apps Script (Web App) اللي بيرجع بيانات لوحة الشرف
+  const HONOR_ROLL_API = "https://script.google.com/macros/s/AKfycbzdANiGXdyKM2iFMpv7HGaZBOUKmF86IQgm5U88fpz2IdPc9_KyNHMO--LQsy8elERv/exec";
+
+  // كل كام ثانية يحدّث لوحة الشرف لوحده (60 ثانية = دقيقة)
+  const REFRESH_SECONDS = 60;
+
+  // رابط امتحان الدرس (رابط Google Form بتاعك)
+  const EXAM_LINK = "https://forms.gle/j8vJYvKGGaxZ4nVh7"; // ⚠️ غيّر ده برابط الفورم بتاعك
+
+  // رابط جروب الواتساب
+  const WHATSAPP_LINK = "https://chat.whatsapp.com/LqvZm9gIEJ0BXa2NYoEBuT";
+
+  // آية اليوم — غيّرها كل درس
+  const VERSE_TEXT = "الرب يقاتل عنكم وأنتم تصمتون";
+  const VERSE_REF = "خروج 14 : 14";
+
+  // التنبيهات المهمة — ضيف/امسح أسطر زي ما تحب
+  const ANNOUNCEMENTS = [
+    "📅 هنستناكم المرة الجاية هنكمل رحلة بني إسرائيل من رفيديم لحد أرض الموعد.",
+    "📝 متنسوش تحلوا امتحان الدرس قبل الحصة الجاية!",
+    "🎁 اسأل علي هديتك لما تجيب الدرجة النهائية."
+  ];
+
+  /* ============================================================
+     تطبيق الإعدادات
+     ============================================================ */
+  document.getElementById("verseText").textContent = VERSE_TEXT;
+  document.getElementById("verseRef").textContent = VERSE_REF;
+  document.getElementById("examLink").href = EXAM_LINK;
+  document.getElementById("whatsappLink").href = WHATSAPP_LINK;
+
+  const announceList = document.getElementById("announceList");
+  if (ANNOUNCEMENTS.length === 0) {
+    announceList.innerHTML = '<div class="announce-empty">مفيش تنبيهات جديدة دلوقتي 🙂</div>';
+  } else {
+    announceList.innerHTML = ANNOUNCEMENTS.map(a => `<div class="announce-card">${a}</div>`).join("");
+  }
+
+  /* ============================================================
+     لوحة الشرف — جلب البيانات من الـ Web App وتحديثها تلقائي
+     ============================================================ */
+  const honorContent = document.getElementById("honorContent");
+  const medals = ["🥇", "🥈", "🥉"];
+
+  async function loadHonorRoll() {
+    if (!HONOR_ROLL_API || HONOR_ROLL_API.includes("XXXX")) {
+      honorContent.innerHTML = `<div class="honor-error">⚠️ لسه محتاج تحط رابط الـ Web App بتاع Google Apps Script في الكود (HONOR_ROLL_API)</div>`;
+      return;
+    }
+    try {
+      const res = await fetch(HONOR_ROLL_API, { cache: "no-store" });
+      if (!res.ok) throw new Error("network");
+      const data = await res.json();
+      renderHonorRoll(data.honorRoll || []);
+    } catch (err) {
+      honorContent.innerHTML = `<div class="honor-error">⚠️ مش قادرين نجيب النتائج دلوقتي — هنجرب تاني بعد شوية</div>`;
+    }
+  }
+
+  function renderHonorRoll(list) {
+    if (!list || list.length === 0) {
+      honorContent.innerHTML = `
+        <div class="honor-empty">
+          <span class="big">🕊️</span>
+          لسه محدّش وصل للدرجة النهائية — يلا بقى مين أول واحد؟
+        </div>`;
+      return;
+    }
+    honorContent.innerHTML = `
+      <div class="honor-grid">
+        ${list.map((item, idx) => `
+          <div class="honor-item" style="animation-delay:${idx * 0.05}s">
+            <span class="medal">${medals[idx] || "⭐"}</span>
+            <span>
+              <span class="name">${escapeHtml(item.name)}</span>
+              <span class="score-tag">درجة كاملة 20/20</span>
+            </span>
+          </div>
+        `).join("")}
+      </div>`;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  loadHonorRoll();
+  setInterval(loadHonorRoll, REFRESH_SECONDS * 1000);
+</script>
+</body>
+</html>
