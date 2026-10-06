@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الدروس — فصل الشهيد العظيم مار جرجس سنة 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --paper: #fffdf9;
+    --paper-2: #f6efe3;
+    --maroon: #7a1530;
+    --maroon-deep: #4d0d1f;
+    --maroon-bright: #a5203f;
+    --gold: #c9a86a;
+    --gold-bright: #e3c589;
+    --ink: #2b1015;
+    --ink-soft: #6b4a52;
+    --line: #e8d9c3;
+    --shadow: rgba(74, 13, 31, 0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: 'Cairo', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  body {
+    position: relative;
+    isolation: isolate;
+    background: var(--paper);
+    padding: 0 0 40px;
+  }
+
+  /* 🌤️ Animated sky layer — moves gently with page scrolling */
+  .scroll-sky {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 560px;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 52%, #f7f1e7 100%);
+    transform: translate3d(0, var(--sky-y, 0px), 0);
+    will-change: transform;
+  }
+  .scroll-sky::before {
+    content: '';
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    right: 8%;
+    top: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,231,143,.98) 0 25%, rgba(255,224,132,.48) 45%, rgba(255,224,132,0) 72%);
+    filter: blur(1px);
+  }
+  .scroll-sky::after {
+    content: '';
+    position: absolute;
+    left: -8%;
+    right: -8%;
+    bottom: -70px;
+    height: 190px;
+    background:
+      radial-gradient(ellipse 360px 95px at 7% 100%, rgba(111,177,119,.24), transparent 70%),
+      radial-gradient(ellipse 420px 105px at 96% 100%, rgba(111,177,119,.20), transparent 70%);
+  }
+  .sky-cloud {
+    position: absolute;
+    height: 42px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.72);
+    filter: blur(.3px);
+    box-shadow: 38px 7px 0 7px rgba(255,255,255,.66), -32px 8px 0 3px rgba(255,255,255,.62);
+  }
+  .sky-cloud.c1 { width: 170px; left: 7%; top: 135px; }
+  .sky-cloud.c2 { width: 210px; left: 42%; top: 215px; opacity: .72; }
+  .sky-cloud.c3 { width: 135px; right: 4%; top: 285px; opacity: .68; }
+
+  /* ---------- Top identity band ---------- */
+  .identity-band {
+    background: linear-gradient(120deg, var(--maroon-deep), var(--maroon) 55%, var(--maroon-deep));
+    color: #fbeee0;
+    padding: env(safe-area-inset-top, 14px) 20px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .identity-band::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 14px);
+    pointer-events: none;
+  }
+  .identity-band .cross {
+    color: var(--gold-bright);
+    font-size: 16px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .identity-band .church {
+    font-weight: 800;
+    font-size: clamp(15px, 2.4vw, 20px);
+  }
+  .identity-band .class {
+    font-size: clamp(12px, 1.6vw, 14.5px);
+    color: #e9c9a9;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 16px 0;
+  }
+  .nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1.5px solid var(--line);
+    color: var(--ink-soft);
+    background: var(--paper);
+  }
+  .nav-pill.active {
+    background: var(--maroon);
+    color: #fdf3e6;
+    border-color: var(--maroon);
+  }
+
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 18px;
+  }
+
+  .page-head {
+    text-align: center;
+    margin-top: 30px;
+  }
+  .page-head h1 {
+    font-size: clamp(24px, 3.6vw, 34px);
+    font-weight: 900;
+    color: var(--maroon-deep);
+    margin: 0 0 8px;
+  }
+  .page-head p {
+    color: var(--ink-soft);
+    font-size: clamp(13px, 1.5vw, 15px);
+    margin: 0;
+  }
+
+  /* ---------- Search / filter ---------- */
+  .filter-row {
+    margin: 26px 0 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 12px 44px 12px 16px;
+    border-radius: 12px;
+    border: 1.5px solid var(--line);
+    background: var(--paper);
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--maroon);
+  }
+  .search-box .icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+    font-size: 15px;
+    pointer-events: none;
+  }
+
+  /* ---------- Lesson list ---------- */
+  .lesson-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .lesson-card {
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .lesson-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 14px 30px var(--shadow);
+  }
+
+  .lesson-summary-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .lesson-num {
+    flex-shrink: 0;
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(155deg, var(--maroon), var(--maroon-deep));
+    color: #fdf3e6;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+  }
+  .lesson-head-txt { flex: 1; min-width: 0; }
+  .lesson-title {
+    font-weight: 800;
+    font-size: clamp(15px, 1.8vw, 17px);
+    color: var(--ink);
+    margin: 0 0 3px;
+  }
+  .lesson-subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lesson-chevron {
+    flex-shrink: 0;
+    color: var(--gold);
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+  .lesson-card.open .lesson-chevron { transform: rotate(90deg); }
+
+  .lesson-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .lesson-card.open .lesson-detail { max-height: 2400px; }
+
+  .lesson-detail-inner {
+    padding: 0 20px 22px;
+    border-top: 1px dashed var(--line);
+    padding-top: 18px;
+  }
+
+  .lesson-verse {
+    background: linear-gradient(155deg, var(--maroon), var(--maroon-deep));
+    color: #fdf3e6;
+    border-radius: 14px;
+    padding: 16px 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .lesson-verse .v-text {
+    font-family: 'Amiri', serif;
+    font-size: clamp(15px, 2vw, 18px);
+    font-weight: 700;
+    line-height: 1.7;
+    margin: 0 0 6px;
+  }
+  .lesson-verse .v-ref {
+    font-size: 12px;
+    color: var(--gold-bright);
+    font-weight: 700;
+  }
+
+  .lesson-summary-text {
+    font-size: 14.5px;
+    line-height: 2;
+    color: var(--ink);
+    white-space: pre-line;
+  }
+
+  .lesson-media {
+    margin-top: 16px;
+    display: grid;
+    gap: 12px;
+  }
+  .lesson-media img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+  }
+  .lesson-media video {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    background: #000;
+  }
+  .media-missing {
+    background: var(--paper-2);
+    border: 1.5px dashed var(--line);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink-soft);
+  }
+  .empty-state .big { font-size: 44px; display: block; margin-bottom: 10px; }
+
+  footer.page-footer {
+    text-align: center;
+    margin-top: 44px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 12px;
+  }
+  footer.page-footer .cross { color: var(--gold); margin: 0 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-sky { transform: none !important; }
+  }
+  @media (max-width: 760px) {
+    .scroll-sky { height: 500px; }
+    .scroll-sky::before { right: -5%; top: 75px; }
+    .sky-cloud.c2 { left: 34%; }
+  }
+</style>
+</head>
+<body>
+  <div class="scroll-sky" aria-hidden="true">
+    <span class="sky-cloud c1"></span>
+    <span class="sky-cloud c2"></span>
+    <span class="sky-cloud c3"></span>
+  </div>
+
+<div class="identity-band">
+  <span class="cross">✝</span>
+  <div class="church">كاتدرائية الشهيد العظيم مار جرجس بمدينة العاشر من رمضان</div>
+  <div class="class">خدمة مرحلة الطفولة — فصل الشهيد العظيم مار جرجس سنة 6</div>
+</div>
+
+<div class="nav-row">
+  <a class="nav-pill" href="dashboard.html">🏠 الرئيسية</a>
+  <a class="nav-pill active" href="#">📖 الدروس</a>
+</div>
+
+<div class="wrap">
+  <div class="page-head">
+    <h1>الدروس</h1>
+    <p>كل دروس السنة، بآياتها وملخصاتها في مكان واحد</p>
+  </div>
+
+  <div class="filter-row">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="دور على درس بالاسم...">
+      <span class="icon">🔍</span>
+    </div>
+  </div>
+
+  <div class="lesson-list" id="lessonList"></div>
+
+  <footer class="page-footer">
+    <span class="cross">✝</span> كاتدرائية الشهيد العظيم مار جرجس بمدينة العاشر من رمضان <span class="cross">✝</span>
+    <br>خدمة مرحلة الطفولة — فصل الشهيد العظيم مار جرجس سنة 6
+  </footer>
+</div>
+
+<script>
+  /* ============================================================
+     بيانات الدروس — ضيف درس جديد هنا كل مرة
+     ============================================================
+     لكل درس:
+     - title: عنوان الدرس
+     - subtitle: العنوان الفرعي (اسم الشخصية/الموضوع)
+     - verseText / verseRef: آية الدرس
+     - summary: ملخص الدرس (استخدم \n\n للفقرات)
+     - images: مصفوفة أسماء ملفات صور (حطها في فولدر images/lessons/)
+     - videos: مصفوفة أسماء ملفات فيديو (حطها في فولدر videos/lessons/)
+     كل الحقول اختيارية غير title و verseText — سيب أي حقل فاضي [] أو ""
+     لو مش موجود.
+     ============================================================ */
+
+  const lessons = [
+    {
+      title: "رحلة شعب (ج 1)",
+      subtitle: "رحلة خروج شعب بني إسرائيل — الجزء الأول",
+      verseText: "الرب يقاتل عنكم وأنتم تصمتون",
+      verseRef: "خروج 14 : 14",
+      summary: `سافرنا رحلة حلوة أوي مع شعب بني إسرائيل من رعمسيس لحد رفيديم، وشفنا ربنا بيعتني بيهم في كل خطوة، حتى لما هما كانوا خايفين أو متذمرين.
+
+مرّينا على: خروف الفصح في رعمسيس، خبز الملة في سكوت، عمود النار والسحاب في إيثام، انشقاق البحر في فم الحيروث، عين مارة المرة اللي بقت حلوة، واحة إيليم، المن والسلوى في برية سين، وأخيرًا ضرب الصخرة والحرب مع عماليق ولقاء يثرون في رفيديم.
+
+الدرس الأهم: ربنا بيوفي بوعده دايمًا، حتى لو إحنا ضعفنا أو شكينا زي بني إسرائيل.`,
+      images: ["01-rihla-1.jpg"],
+      videos: []
+    },
+    {
+      title: "رحلة شعب (ج 2)",
+      subtitle: "رحلة خروج شعب بني إسرائيل — الجزء الثاني",
+      verseText: "اُنْظُرُوا الآنَ! أَنَا أَنَا هُوَ وَلَيْسَ إِلَهٌ مَعِي.",
+      verseRef: "تث 32 : 39",
+      summary: `كملنا الرحلة من رفيديم لحد موت موسى على جبل نبو! 🏔️
+
+في برية سيناء، استلم الشعب الوصايا العشر، وبنى هارون العجل الذهبي، وغضب موسى وكسر لوحي العهد، لكنه تشفع في الشعب وصعد تاني واستلم لوحين جدد.
+
+في فاران، تذمر الشعب فاشتعلت نار، واختار موسى 70 شيخًا يساعدوه.
+
+في حضيروت، اتعاقبت مريم بالبرص بسبب نميمتها على موسى.
+
+في قادش برنيع، اتبعت 12 جاسوس لأرض الموعد، وبسبب خوف وتذمر الشعب، حكم الله عليهم بالتيه 40 سنة.
+
+في جبل هور، مات هارون وانتقل الكهنوت لابنه أليعازر.
+
+وأخيرًا، بعد رحلة طويلة ملهاش حصر، صعد موسى جبل نبو، شاف أرض الموعد من بعيد، ومات هناك ودفنه الرب بنفسه.
+
+الدرس الأهم: حتى لما إحنا بنضعف ونتذمر، ربنا صبور علينا، وبيستخدم شفاعة القديسين عشاننا. 🙏💙`,
+      images: ["02-rihla-2.jpg"],
+      videos: []
+    },
+    {
+      title: "ساعتك كام",
+      subtitle: "إدارة الوقت",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "عاوز حقي",
+      subtitle: "بنات صلفحاد",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "جواب لين",
+      subtitle: "أبيجايل وكيف تعاملت مع داود",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "صغير لكن أقدر",
+      subtitle: "يوشيا الملك",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "ابن الوعظ",
+      subtitle: "القديس برنابا الرسول",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "أنا غالي",
+      subtitle: "وزنة جسدي",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "عامل مش خامل (ج 1)",
+      subtitle: "العادات السبع — الجزء الأول",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "عامل مش خامل (ج 2)",
+      subtitle: "العادات السبع — الجزء الثاني",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "احفظني احفظك",
+      subtitle: "الصلاة بالمزامير",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "حرب بدون أسلحة",
+      subtitle: "الملك يهوشافاط",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "مجلة الميلاد",
+      subtitle: "الله يعد العالم للتجسد",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    },
+    {
+      title: "حلوة الخلوة",
+      subtitle: "الخلوة الروحية",
+      verseText: "",
+      verseRef: "",
+      summary: "",
+      images: [],
+      videos: []
+    }
+  ];
+
+  /* ============================================================
+     الرندر
+     ============================================================ */
+  const lessonListEl = document.getElementById("lessonList");
+  const searchInput = document.getElementById("searchInput");
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderLessons(filterText) {
+    const q = (filterText || "").trim().toLowerCase();
+    const filtered = lessons.filter(l =>
+      !q || l.title.toLowerCase().includes(q) || l.subtitle.toLowerCase().includes(q)
+    );
+
+    if (filtered.length === 0) {
+      lessonListEl.innerHTML = `
+        <div class="empty-state">
+          <span class="big">📭</span>
+          مفيش دروس مطابقة للبحث
+        </div>`;
+      return;
+    }
+
+    lessonListEl.innerHTML = filtered.map((lesson, idx) => {
+      const hasVerse = lesson.verseText && lesson.verseText.trim() !== "";
+      const hasSummary = lesson.summary && lesson.summary.trim() !== "";
+      const hasMedia = (lesson.images && lesson.images.length) || (lesson.videos && lesson.videos.length);
+
+      const mediaHtml = hasMedia ? `
+        <div class="lesson-media">
+          ${(lesson.images || []).map(img => `
+            <img src="images/lessons/${img}" alt="${escapeHtml(lesson.title)}"
+                 onerror="this.outerHTML='<div class=&quot;media-missing&quot;>مستني الصورة: <b>images/lessons/${img}</b></div>'">
+          `).join("")}
+          ${(lesson.videos || []).map(vid => `
+            <video controls preload="metadata">
+              <source src="videos/lessons/${vid}">
+            </video>
+          `).join("")}
+        </div>
+      ` : "";
+
+      return `
+        <div class="lesson-card" data-idx="${idx}">
+          <div class="lesson-summary-row" onclick="toggleLesson(${idx})">
+            <div class="lesson-num">${idx + 1}</div>
+            <div class="lesson-head-txt">
+              <p class="lesson-title">${escapeHtml(lesson.title)}</p>
+              <p class="lesson-subtitle">${escapeHtml(lesson.subtitle || "")}</p>
+            </div>
+            <div class="lesson-chevron">‹</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-detail-inner">
+              ${hasVerse ? `
+                <div class="lesson-verse">
+                  <p class="v-text">${escapeHtml(lesson.verseText)}</p>
+                  <span class="v-ref">${escapeHtml(lesson.verseRef || "")}</span>
+                </div>
+              ` : ""}
+              ${hasSummary ? `<div class="lesson-summary-text">${escapeHtml(lesson.summary)}</div>` : `<div class="lesson-summary-text" style="color:var(--ink-soft)">لسه الملخص مش متضاف لهذا الدرس.</div>`}
+              ${mediaHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function toggleLesson(idx) {
+    const card = lessonListEl.querySelector(`.lesson-card[data-idx="${idx}"]`);
+    if (card) card.classList.toggle("open");
+  }
+  window.toggleLesson = toggleLesson;
+
+  searchInput.addEventListener("input", (e) => renderLessons(e.target.value));
+
+  renderLessons("");
+
+  /* Gentle parallax: the sky drifts slightly as the child scrolls. */
+  (() => {
+    const sky = document.querySelector('.scroll-sky');
+    if (!sky) return;
+    let ticking = false;
+    const updateSky = () => {
+      const y = Math.min(window.scrollY || 0, 1400);
+      sky.style.setProperty('--sky-y', `${-y * 0.075}px`);
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateSky);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateSky();
+  })();
+</script>
+</body>
+</html>
