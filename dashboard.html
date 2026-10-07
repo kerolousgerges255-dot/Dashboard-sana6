@@ -34,12 +34,57 @@
     background: var(--paper);
   }
   body {
-    background:
-      radial-gradient(ellipse 900px 500px at 8% -5%, rgba(165, 32, 63, 0.07), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(201, 168, 106, 0.12), transparent 55%),
-      var(--paper);
+    position: relative;
+    isolation: isolate;
+    background: var(--paper);
     padding: 0 0 40px;
   }
+
+  /* 🌤️ Animated sky layer — moves gently with page scrolling */
+  .scroll-sky {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 570px;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 52%, #f7f1e7 100%);
+    transform: translate3d(0, var(--sky-y, 0px), 0);
+    will-change: transform;
+  }
+  .scroll-sky::before {
+    content: '';
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    right: 8%;
+    top: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,231,143,.98) 0 25%, rgba(255,224,132,.48) 45%, rgba(255,224,132,0) 72%);
+    filter: blur(1px);
+  }
+  .scroll-sky::after {
+    content: '';
+    position: absolute;
+    left: -8%;
+    right: -8%;
+    bottom: -70px;
+    height: 190px;
+    background:
+      radial-gradient(ellipse 360px 95px at 7% 100%, rgba(111,177,119,.24), transparent 70%),
+      radial-gradient(ellipse 420px 105px at 96% 100%, rgba(111,177,119,.20), transparent 70%);
+  }
+  .sky-cloud {
+    position: absolute;
+    height: 42px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.72);
+    filter: blur(.3px);
+    box-shadow: 38px 7px 0 7px rgba(255,255,255,.66), -32px 8px 0 3px rgba(255,255,255,.62);
+  }
+  .sky-cloud.c1 { width: 170px; left: 7%; top: 135px; }
+  .sky-cloud.c2 { width: 210px; left: 42%; top: 215px; opacity: .72; }
+  .sky-cloud.c3 { width: 135px; right: 4%; top: 285px; opacity: .68; }
 
   /* ---------- Top identity band ---------- */
   .identity-band {
@@ -257,10 +302,20 @@
   .honor-wrap::before {
     content: "🏆";
     position: absolute;
-    font-size: 130px;
-    opacity: 0.05;
-    top: -24px;
-    left: -10px;
+    font-size: 150px;
+    opacity: 0.06;
+    top: -28px;
+    left: -14px;
+    pointer-events: none;
+    transform: rotate(-12deg);
+  }
+  .honor-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(227,197,137,.25), transparent 40%),
+      radial-gradient(circle at 4% 96%, rgba(122,21,48,.05), transparent 45%);
     pointer-events: none;
   }
   .honor-head {
@@ -299,41 +354,126 @@
     50% { box-shadow: 0 0 0 5px rgba(47,158,92,0); }
   }
 
-  .honor-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-    gap: 12px;
-  }
-  .honor-item {
-    background: var(--paper);
-    border: 1.5px solid var(--line);
-    border-radius: 14px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    animation: itemIn 0.4s ease both;
-  }
   @keyframes itemIn {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .honor-item .medal {
-    font-size: 22px;
-    flex-shrink: 0;
+
+  /* ---------- Tiers: ماسي / دهبي / فضي / برونزي ---------- */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
   }
-  .honor-item .name {
+  .tier-block {
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px;
+    border: 2px solid var(--line);
+    box-shadow: 0 10px 24px rgba(74,13,31,.06);
+    position: relative;
+    overflow: hidden;
+    animation: itemIn 0.4s ease both;
+  }
+  .tier-block::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 100% 0%, rgba(255,255,255,.5), transparent 55%);
+    pointer-events: none;
+  }
+  .tier-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+    position: relative;
+  }
+  .tier-icon {
+    font-size: 32px;
+    line-height: 1;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,.18));
+  }
+  .tier-head b {
+    display: block;
+    font-size: 15px;
+    color: var(--maroon-deep);
+    font-weight: 800;
+  }
+  .tier-head small {
+    display: block;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-top: 3px;
+  }
+  .tier-count {
+    margin-right: auto;
+    background: var(--paper-2);
+    color: var(--maroon-deep);
+    font-weight: 900;
+    font-size: 14px;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 7px;
+  }
+  .tier-students {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    max-height: 210px;
+    overflow-y: auto;
+  }
+  .tier-student {
+    background: var(--paper-2);
+    border-radius: 11px;
+    padding: 9px 13px;
+    font-size: 13.5px;
     font-weight: 700;
-    font-size: 14.5px;
     color: var(--ink);
   }
-  .honor-item .score-tag {
-    display: block;
-    font-size: 11px;
-    color: var(--maroon);
-    font-weight: 700;
-    margin-top: 2px;
+  .tier-empty {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 14px;
   }
+
+  /* ماسي — فيروزي لامع، أفخم مستوى */
+  .tier-diamond {
+    border-color: #8fd9ec;
+    background: linear-gradient(160deg, #eefcff 0%, #ffffff 65%);
+    box-shadow: 0 14px 34px rgba(60,170,200,.18);
+  }
+  .tier-diamond .tier-head { border-bottom-color: #bfe9f3; }
+  .tier-diamond .tier-head b { color: #0e7490; }
+  .tier-diamond .tier-student { background: #e3f7fc; color: #0b5c70; }
+  .tier-diamond .tier-count { background: #cdf1f9; color: #0b5c70; }
+  .tier-diamond .tier-icon { filter: drop-shadow(0 4px 10px rgba(60,190,220,.55)); }
+
+  /* دهبي */
+  .tier-gold { border-color: #f0d27a; }
+  .tier-gold .tier-head b { color: #9a7312; }
+  .tier-gold .tier-student { background: #fff8e4; color: #8a6a10; }
+  .tier-gold .tier-count { background: #fdeec0; color: #8a6a10; }
+
+  /* فضي */
+  .tier-silver { border-color: #d7dbe2; }
+  .tier-silver .tier-head b { color: #5c6675; }
+  .tier-silver .tier-student { background: #f3f5f7; color: #50596a; }
+  .tier-silver .tier-count { background: #e6e9ee; color: #50596a; }
+
+  /* برونزي */
+  .tier-bronze { border-color: #d8ad84; }
+  .tier-bronze .tier-head b { color: #8a4e23; }
+  .tier-bronze .tier-student { background: #fbf1e6; color: #7a4720; }
+  .tier-bronze .tier-count { background: #f3dfc7; color: #7a4720; }
 
   .honor-empty {
     text-align: center;
@@ -362,12 +502,122 @@
   }
   footer.page-footer .cross { color: var(--gold); margin: 0 4px; }
 
+  /* ---------- Hero banner image (fixed, not sticky) ---------- */
+  .hero-banner {
+    margin-top: 20px;
+    position: relative;
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px var(--shadow);
+    border: 1px solid var(--line);
+    line-height: 0;
+  }
+  .hero-banner-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .hero-hit {
+    position: absolute;
+    display: block;
+    /* These hotspots match the actual buttons in images/hero-banner.png.
+       They are intentionally slightly larger than the visible buttons for easy tapping on phones. */
+    width: 13.4%;
+    height: 16.8%;
+    top: 39.9%;
+    border-radius: 24px;
+    cursor: pointer;
+    z-index: 3;
+  }
+  /* Image coordinates (1672×941):
+     honor ≈ x 903–1098, challenge ≈ 1115–1312, lessons ≈ 1324–1519. */
+  .hero-hit-honor { right: 33.2%; }
+  .hero-hit-challenge { right: 20.7%; }
+  .hero-hit-lessons { right: 8.2%; }
+  .hero-hit:hover { background: rgba(255,255,255,.08); }
+  .hero-hit:focus-visible { outline: 3px solid var(--maroon-deep); outline-offset: 3px; }
+
+  /* ---------- Exam closed / info modal ---------- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(43, 16, 21, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .modal-card {
+    background: var(--paper);
+    border-radius: 22px;
+    border: 2px solid var(--gold);
+    padding: 34px 28px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    transform: translateY(14px) scale(0.96);
+    transition: transform 0.3s cubic-bezier(.2,.9,.25,1.1);
+  }
+  .modal-overlay.open .modal-card { transform: translateY(0) scale(1); }
+  .modal-card .modal-icon { font-size: 44px; margin-bottom: 12px; }
+  .modal-card h3 {
+    margin: 0 0 10px;
+    font-size: 19px;
+    color: var(--maroon-deep);
+    font-weight: 800;
+  }
+  .modal-card p {
+    margin: 0 0 20px;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+  .modal-card button {
+    background: var(--maroon);
+    color: #fff;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 999px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .modal-card button:hover { background: var(--maroon-deep); }
+
+  @media (max-width: 620px) {
+    .hero-hit { width: 15.2%; height: 18%; top: 39%; }
+    .hero-hit-honor { right: 32.1%; }
+    .hero-hit-challenge { right: 19.8%; }
+    .hero-hit-lessons { right: 7.5%; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-sky { transform: none !important; }
+  }
+  @media (max-width: 760px) {
+    .scroll-sky { height: 500px; }
+    .scroll-sky::before { right: -5%; top: 75px; }
+    .sky-cloud.c2 { left: 34%; }
   }
 </style>
 </head>
 <body>
+  <div class="scroll-sky" aria-hidden="true">
+    <span class="sky-cloud c1"></span>
+    <span class="sky-cloud c2"></span>
+    <span class="sky-cloud c3"></span>
+  </div>
 
 <div class="identity-band">
   <span class="cross">✝</span>
@@ -381,6 +631,14 @@
 </div>
 
 <div class="wrap">
+
+  <!-- Hero banner (fixed image, not sticky) -->
+  <section class="hero-banner" aria-label="رحلتنا في سنة 6">
+    <img src="images/hero-banner.png" alt="رحلتنا في سنة 6 — يلا نبدأ رحلتنا مع ربنا" class="hero-banner-img">
+    <a class="hero-hit hero-hit-honor" href="#honor" aria-label="قاعة الأبطال"></a>
+    <a class="hero-hit hero-hit-challenge" href="https://docs.google.com/forms/d/e/1FAIpQLSd-p_Nl9c4q0PV2dBgjOF0IZBkJZJsb7yA80DPpSptnnE9UxQ/viewform" target="_blank" rel="noopener" aria-label="التحدي"></a>
+    <a class="hero-hit hero-hit-lessons" href="lessons.html" aria-label="الدروس"></a>
+  </section>
 
   <!-- Verse of the day -->
   <div class="verse-hero">
@@ -400,20 +658,20 @@
   </div>
 
   <!-- Quick actions -->
-  <div class="section-title">
+  <div class="section-title" id="challenge">
     <span class="dot"></span>
     <h2>روابط سريعة</h2>
     <span class="rule"></span>
   </div>
   <div class="action-row">
-    <a class="action-card exam" href="#" id="examLink" target="_blank" rel="noopener">
+    <button class="action-card exam" id="examLink" type="button">
       <span class="icon">📝</span>
       <span class="txt">
         <p class="title">امتحان الدرس</p>
-        <p class="sub">تابع رحلة بني إسرائيل في البرية</p>
+        <p class="sub" id="examSub">جاوب على أسئلة درس الأسبوع ده</p>
       </span>
       <span class="arrow">←</span>
-    </a>
+    </button>
     <a class="action-card whatsapp" href="#" id="whatsappLink" target="_blank" rel="noopener">
       <span class="icon">💬</span>
       <span class="txt">
@@ -425,14 +683,14 @@
   </div>
 
   <!-- Honor roll -->
-  <div class="section-title">
+  <div class="section-title" id="honor">
     <span class="dot"></span>
-    <h2>لوحة الشرف — الدرجة النهائية 🏆</h2>
+    <h2>لوحة الشرف — مستويات الإنجاز 🏆</h2>
     <span class="rule"></span>
   </div>
   <div class="honor-wrap">
     <div class="honor-head">
-      <h3>🏆 أبطال الدرجة الكاملة</h3>
+      <h3>🏆 مستويات الأبطال</h3>
       <span class="honor-meta"><span class="live-dot"></span> بيتحدّث أوتوماتيك</span>
     </div>
     <div id="honorContent">
@@ -448,6 +706,16 @@
     <br>خدمة مرحلة الطفولة — فصل الشهيد العظيم مار جرجس سنة 6
   </footer>
 
+</div>
+
+<!-- Exam closed / info modal -->
+<div class="modal-overlay" id="examModal">
+  <div class="modal-card">
+    <div class="modal-icon">🎉</div>
+    <h3>خلص يا أبطال سنة 6!</h3>
+    <p>استنونا في تحدي الأسبوع الجاي 🙏</p>
+    <button id="examModalClose" type="button">تمام</button>
+  </div>
 </div>
 
 <script>
@@ -484,7 +752,6 @@
      ============================================================ */
   document.getElementById("verseText").textContent = VERSE_TEXT;
   document.getElementById("verseRef").textContent = VERSE_REF;
-  document.getElementById("examLink").href = EXAM_LINK;
   document.getElementById("whatsappLink").href = WHATSAPP_LINK;
 
   const announceList = document.getElementById("announceList");
@@ -495,10 +762,67 @@
   }
 
   /* ============================================================
-     لوحة الشرف — جلب البيانات من الـ Web App وتحديثها تلقائي
+     زرار امتحان الدرس — لو EXAM_LINK فاضي يفتح رسالة بدل ما يفتح رابط فاضي
+     ============================================================ */
+  const examBtn = document.getElementById("examLink");
+  const examSub = document.getElementById("examSub");
+  const examModal = document.getElementById("examModal");
+  const hasExam = EXAM_LINK && EXAM_LINK.trim() !== "" && EXAM_LINK.trim() !== "#";
+
+  if (!hasExam) {
+    examSub.textContent = "خلص يا أبطال سنة 6! استنونا في تحدي الأسبوع الجاي";
+  }
+
+  examBtn.addEventListener("click", () => {
+    if (hasExam) {
+      window.open(EXAM_LINK, "_blank", "noopener");
+    } else {
+      examModal.classList.add("open");
+    }
+  });
+  document.getElementById("examModalClose").addEventListener("click", () => {
+    examModal.classList.remove("open");
+  });
+  examModal.addEventListener("click", (e) => {
+    if (e.target === examModal) examModal.classList.remove("open");
+  });
+
+  /* ============================================================
+     لوحة الشرف — مستويات (ماسي / دهبي / فضي / برونزي)
+     جلب البيانات من الـ Web App وتحديثها تلقائي
      ============================================================ */
   const honorContent = document.getElementById("honorContent");
-  const medals = ["🥇", "🥈", "🥉"];
+
+  const TIER_META = [
+    { key: "diamond", icon: "💎", label: "ماسي",   sub: "20 / 20 — متنساش تسأل عن الهديّة بتاعتك المرة الجاية! 🎁", cls: "tier-diamond" },
+    { key: "gold",    icon: "🥇", label: "دهبي",   sub: "19 / 20", cls: "tier-gold" },
+    { key: "silver",  icon: "🥈", label: "فضي",    sub: "18 / 20", cls: "tier-silver" },
+    { key: "bronze",  icon: "🥉", label: "برونزي", sub: "برافو عليكم وشكرًا لمجهودكم! المرة الجاية هنستناكم في الماسي 💎", cls: "tier-bronze" }
+  ];
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderTier(meta, students) {
+    const studentsHtml = students.length
+      ? students.map(s => `<div class="tier-student"><b>${escapeHtml(s.name)}</b></div>`).join("")
+      : `<div class="tier-empty">لسه محدّش هنا</div>`;
+    return `
+      <div class="tier-block ${meta.cls}">
+        <div class="tier-head">
+          <span class="tier-icon">${meta.icon}</span>
+          <div>
+            <b>${meta.label}</b>
+            <small>${meta.sub}</small>
+          </div>
+          <span class="tier-count">${students.length}</span>
+        </div>
+        <div class="tier-students">${studentsHtml}</div>
+      </div>`;
+  }
 
   async function loadHonorRoll() {
     if (!HONOR_ROLL_API || HONOR_ROLL_API.includes("XXXX")) {
@@ -509,43 +833,43 @@
       const res = await fetch(HONOR_ROLL_API, { cache: "no-store" });
       if (!res.ok) throw new Error("network");
       const data = await res.json();
-      renderHonorRoll(data.honorRoll || []);
+      const tiers = data.tiers || { diamond: [], gold: [], silver: [], bronze: [] };
+      const totalPlaced = tiers.diamond.length + tiers.gold.length + tiers.silver.length + tiers.bronze.length;
+      if (!totalPlaced) {
+        honorContent.innerHTML = `
+          <div class="honor-empty">
+            <span class="big">🕊️</span>
+            لسه محدّش حل الامتحان — يلا بقى مين أول واحد؟
+          </div>`;
+        return;
+      }
+      honorContent.innerHTML = `<div class="tier-grid">${TIER_META.map(meta => renderTier(meta, tiers[meta.key] || [])).join("")}</div>`;
     } catch (err) {
       honorContent.innerHTML = `<div class="honor-error">⚠️ مش قادرين نجيب النتائج دلوقتي — هنجرب تاني بعد شوية</div>`;
     }
   }
 
-  function renderHonorRoll(list) {
-    if (!list || list.length === 0) {
-      honorContent.innerHTML = `
-        <div class="honor-empty">
-          <span class="big">🕊️</span>
-          لسه محدّش وصل للدرجة النهائية — يلا بقى مين أول واحد؟
-        </div>`;
-      return;
-    }
-    honorContent.innerHTML = `
-      <div class="honor-grid">
-        ${list.map((item, idx) => `
-          <div class="honor-item" style="animation-delay:${idx * 0.05}s">
-            <span class="medal">${medals[idx] || "⭐"}</span>
-            <span>
-              <span class="name">${escapeHtml(item.name)}</span>
-              <span class="score-tag">درجة كاملة 20/20</span>
-            </span>
-          </div>
-        `).join("")}
-      </div>`;
-  }
-
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
   loadHonorRoll();
   setInterval(loadHonorRoll, REFRESH_SECONDS * 1000);
+
+  /* Gentle parallax: the sky drifts slightly as the child scrolls. */
+  (() => {
+    const sky = document.querySelector('.scroll-sky');
+    if (!sky) return;
+    let ticking = false;
+    const updateSky = () => {
+      const y = Math.min(window.scrollY || 0, 1400);
+      sky.style.setProperty('--sky-y', `${-y * 0.075}px`);
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateSky);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateSky();
+  })();
 </script>
 </body>
 </html>

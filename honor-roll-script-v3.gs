@@ -13,14 +13,18 @@
  */
 
 // درجة النجاح الكاملة (غيّرها لو مجموع درجاتك مختلف)
-var FULL_SCORE = 20;
+// حدود المستويات: ماسي = الدرجة الكاملة بالظبط، دهبي = درجة واحدة أقل،
+// فضي = درجتين أقل، وأي حد أقل من كده يدخل في "برونزي".
+var DIAMOND_SCORE = 20;
+var GOLD_SCORE = 19;
+var SILVER_SCORE = 18;
 
 function doGet(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = sheet.getDataRange().getValues();
 
   if (data.length < 2) {
-    return jsonResponse({ honorRoll: [], totalSubmissions: 0, totalStudents: 0 });
+    return jsonResponse({ tiers: { diamond: [], gold: [], silver: [], bronze: [] }, totalSubmissions: 0, totalStudents: 0 });
   }
 
   var headers = data[0];
@@ -66,30 +70,34 @@ function doGet(e) {
     }
   }
 
-  // دلوقتي نفلتر: مين من "أول المحاولات" دي جاب الدرجة الكاملة
-  var honorRoll = [];
+  // دلوقتي نوزّع كل "أول محاولة" على المستوى المناسب ليها
+  var tiers = { diamond: [], gold: [], silver: [], bronze: [] };
   var allKeys = Object.keys(firstAttemptByEmail);
 
   allKeys.forEach(function(key) {
     var attempt = firstAttemptByEmail[key];
     var scoreValue = parseScore(attempt.rawScore);
-    if (scoreValue !== null && scoreValue >= FULL_SCORE) {
-      honorRoll.push({
-        name: attempt.name,
-        timestamp: attempt.timestamp
-      });
-    }
+    if (scoreValue === null) return; // لسه مفيش درجة متسجلة
+
+    var entry = { name: attempt.name, timestamp: attempt.timestamp, score: scoreValue };
+    if (scoreValue >= DIAMOND_SCORE) tiers.diamond.push(entry);
+    else if (scoreValue >= GOLD_SCORE) tiers.gold.push(entry);
+    else if (scoreValue >= SILVER_SCORE) tiers.silver.push(entry);
+    else tiers.bronze.push(entry);
   });
 
-  // الأحدث أولاً (على حسب وقت أول محاولة)
-  honorRoll.sort(function(a, b) {
+  function byNewest(a, b) {
     var ta = a.timestamp ? new Date(a.timestamp).getTime() : 0;
     var tb = b.timestamp ? new Date(b.timestamp).getTime() : 0;
     return tb - ta;
-  });
+  }
+  tiers.diamond.sort(byNewest);
+  tiers.gold.sort(byNewest);
+  tiers.silver.sort(byNewest);
+  tiers.bronze.sort(byNewest);
 
   return jsonResponse({
-    honorRoll: honorRoll,
+    tiers: tiers,
     totalSubmissions: totalSubmissions,   // كل محاولات التسليم (بما فيها التكرار)
     totalStudents: allKeys.length,        // عدد الطلاب الفعليين (بعد إزالة التكرار)
     updatedAt: new Date().toISOString(),

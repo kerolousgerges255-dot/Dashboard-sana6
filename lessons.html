@@ -34,12 +34,57 @@
     background: var(--paper);
   }
   body {
-    background:
-      radial-gradient(ellipse 900px 500px at 8% -5%, rgba(165, 32, 63, 0.07), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(201, 168, 106, 0.12), transparent 55%),
-      var(--paper);
+    position: relative;
+    isolation: isolate;
+    background: var(--paper);
     padding: 0 0 40px;
   }
+
+  /* 🌤️ Animated sky layer — moves gently with page scrolling */
+  .scroll-sky {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 560px;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 52%, #f7f1e7 100%);
+    transform: translate3d(0, var(--sky-y, 0px), 0);
+    will-change: transform;
+  }
+  .scroll-sky::before {
+    content: '';
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    right: 8%;
+    top: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,231,143,.98) 0 25%, rgba(255,224,132,.48) 45%, rgba(255,224,132,0) 72%);
+    filter: blur(1px);
+  }
+  .scroll-sky::after {
+    content: '';
+    position: absolute;
+    left: -8%;
+    right: -8%;
+    bottom: -70px;
+    height: 190px;
+    background:
+      radial-gradient(ellipse 360px 95px at 7% 100%, rgba(111,177,119,.24), transparent 70%),
+      radial-gradient(ellipse 420px 105px at 96% 100%, rgba(111,177,119,.20), transparent 70%);
+  }
+  .sky-cloud {
+    position: absolute;
+    height: 42px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.72);
+    filter: blur(.3px);
+    box-shadow: 38px 7px 0 7px rgba(255,255,255,.66), -32px 8px 0 3px rgba(255,255,255,.62);
+  }
+  .sky-cloud.c1 { width: 170px; left: 7%; top: 135px; }
+  .sky-cloud.c2 { width: 210px; left: 42%; top: 215px; opacity: .72; }
+  .sky-cloud.c3 { width: 135px; right: 4%; top: 285px; opacity: .68; }
 
   /* ---------- Top identity band ---------- */
   .identity-band {
@@ -304,9 +349,23 @@
   @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-sky { transform: none !important; }
+  }
+  @media (max-width: 760px) {
+    .scroll-sky { height: 500px; }
+    .scroll-sky::before { right: -5%; top: 75px; }
+    .sky-cloud.c2 { left: 34%; }
+  }
 </style>
 </head>
 <body>
+  <div class="scroll-sky" aria-hidden="true">
+    <span class="sky-cloud c1"></span>
+    <span class="sky-cloud c2"></span>
+    <span class="sky-cloud c3"></span>
+  </div>
 
 <div class="identity-band">
   <span class="cross">✝</span>
@@ -584,6 +643,25 @@
   searchInput.addEventListener("input", (e) => renderLessons(e.target.value));
 
   renderLessons("");
+
+  /* Gentle parallax: the sky drifts slightly as the child scrolls. */
+  (() => {
+    const sky = document.querySelector('.scroll-sky');
+    if (!sky) return;
+    let ticking = false;
+    const updateSky = () => {
+      const y = Math.min(window.scrollY || 0, 1400);
+      sky.style.setProperty('--sky-y', `${-y * 0.075}px`);
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateSky);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateSky();
+  })();
 </script>
 </body>
 </html>
