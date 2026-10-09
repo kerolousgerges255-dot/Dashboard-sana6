@@ -48,7 +48,10 @@
     z-index: -1;
     pointer-events: none;
     overflow: hidden;
-    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 52%, #f7f1e7 100%);
+    /* السماء بتتلاشى لشفاف بدل ما تنتهي بلون صلب، علشان ميبقاش فيه خط أبيض */
+    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 50%, rgba(255,253,249,0) 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
     transform: translate3d(0, var(--sky-y, 0px), 0);
     will-change: transform;
   }
@@ -270,6 +273,15 @@
     text-decoration: none;
     color: var(--ink);
     transition: border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    /* علشان زرار الامتحان (button) ياخد نفس خط وشكل باقي الكروت */
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: start;
+    width: 100%;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
   }
   .action-card:hover {
     border-color: var(--maroon);
@@ -528,6 +540,14 @@
     border-radius: 24px;
     cursor: pointer;
     z-index: 3;
+    /* ريسيت علشان زرار التحدي (button) يبقى شكله زي باقي الأزرار (a) بالظبط */
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    appearance: none;
+    -webkit-appearance: none;
   }
   /* Image coordinates (1672×941):
      honor ≈ x 903–1098, challenge ≈ 1115–1312, lessons ≈ 1324–1519. */
@@ -636,7 +656,8 @@
   <section class="hero-banner" aria-label="رحلتنا في سنة 6">
     <img src="images/hero-banner.png" alt="رحلتنا في سنة 6 — يلا نبدأ رحلتنا مع ربنا" class="hero-banner-img">
     <a class="hero-hit hero-hit-honor" href="#honor" aria-label="قاعة الأبطال"></a>
-    <a class="hero-hit hero-hit-challenge" href="https://docs.google.com/forms/d/e/1FAIpQLSd-p_Nl9c4q0PV2dBgjOF0IZBkJZJsb7yA80DPpSptnnE9UxQ/viewform" target="_blank" rel="noopener" aria-label="التحدي"></a>
+    <!-- زرار التحدي دلوقتي مربوط بنفس EXAM_LINK بتاع الإعدادات (مفيش لينك مكتوب هنا) -->
+    <button class="hero-hit hero-hit-challenge" id="heroChallengeBtn" type="button" aria-label="التحدي"></button>
     <a class="hero-hit hero-hit-lessons" href="lessons.html" aria-label="الدروس"></a>
   </section>
 
@@ -730,13 +751,14 @@
   const REFRESH_SECONDS = 30;
 
   // رابط امتحان الدرس (رابط Google Form بتاعك)
+  // لو سيبته فاضي "" الزرارين (اللي في البانر واللي تحت) هيفتحوا رسالة "خلص يا أبطال"
   const EXAM_LINK = "https://forms.gle/qq9M1BjtwSXu6zqv8"; // ⚠️ غيّر ده برابط الفورم بتاعك
 
   // رابط جروب الواتساب
   const WHATSAPP_LINK = "https://chat.whatsapp.com/LqvZm9gIEJ0BXa2NYoEBuT";
 
   // آية اليوم — غيّرها كل درس
-  const VERSE_TEXT = "مُفْتَدِينَ الْوَقْتَ لأَنَّ الأَيَّامَ شِرِّيرَةٌ";
+  const VERSE_TEXT = "مُفْتَدِينَ الْوَقْتَ لأَنَّ الأَيَّامَ شِرِّيرَةٌ";
   const VERSE_REF = "أفسس 5 : 16";
 
   // التنبيهات المهمة — ضيف/امسح أسطر زي ما تحب
@@ -762,9 +784,12 @@
   }
 
   /* ============================================================
-     زرار امتحان الدرس — لو EXAM_LINK فاضي يفتح رسالة بدل ما يفتح رابط فاضي
+     زرار امتحان الدرس (اللي تحت) + زرار التحدي (اللي في البانر فوق)
+     الاتنين بيشتغلوا من نفس الدالة ونفس EXAM_LINK، يعني لو غيّرت
+     اللينك أو شيلته من الإعدادات الاتنين بيتغيروا مع بعض.
      ============================================================ */
   const examBtn = document.getElementById("examLink");
+  const heroChallengeBtn = document.getElementById("heroChallengeBtn");
   const examSub = document.getElementById("examSub");
   const examModal = document.getElementById("examModal");
   const hasExam = EXAM_LINK && EXAM_LINK.trim() !== "" && EXAM_LINK.trim() !== "#";
@@ -773,13 +798,16 @@
     examSub.textContent = "التحدي خلص يا أبطال سنة 6! استنونا في تحدي الأسبوع الجاي";
   }
 
-  examBtn.addEventListener("click", () => {
+  function handleExamClick() {
     if (hasExam) {
       window.open(EXAM_LINK, "_blank", "noopener");
     } else {
       examModal.classList.add("open");
     }
-  });
+  }
+  examBtn.addEventListener("click", handleExamClick);
+  heroChallengeBtn.addEventListener("click", handleExamClick);
+
   document.getElementById("examModalClose").addEventListener("click", () => {
     examModal.classList.remove("open");
   });
