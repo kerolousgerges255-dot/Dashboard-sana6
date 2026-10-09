@@ -44,11 +44,14 @@
   .scroll-sky {
     position: fixed;
     inset: 0 0 auto 0;
-    height: 560px;
+        height: 680px;
     z-index: -1;
     pointer-events: none;
     overflow: hidden;
-    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 52%, #f7f1e7 100%);
+    /* السماء بتتلاشى لشفاف بدل ما تنتهي بلون كريمي صلب، علشان ميبقاش فيه خط أبيض */
+    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 50%, rgba(255,253,249,0) 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
     transform: translate3d(0, var(--sky-y, 0px), 0);
     will-change: transform;
   }
