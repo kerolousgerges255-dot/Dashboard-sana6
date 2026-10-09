@@ -668,7 +668,7 @@
       <span class="icon">📝</span>
       <span class="txt">
         <p class="title">امتحان الدرس</p>
-        <p class="sub" id="examSub">جاوب على أسئلة درس الأسبوع ده</p>
+        <p class="sub" id="examSub">ساعتك كام (إدارة الوقت)</p>
       </span>
       <span class="arrow">←</span>
     </button>
@@ -724,20 +724,20 @@
      ============================================================ */
 
   // رابط الـ Google Apps Script (Web App) اللي بيرجع بيانات لوحة الشرف
-  const HONOR_ROLL_API = "https://script.google.com/macros/s/AKfycby_d6jgohIuj71p9Py-h4xckn2I58JKbnMADoyysmXc8pdaW-B80L_YBTh2RyIXK0L7/exec";
+  const HONOR_ROLL_API = "https://script.google.com/macros/s/AKfycbzHoa5c4A6CwYZ8-0QojxDyo01BatJXpuZhKsKz2uvGXPQdUFFkFA41-wVE5QTucPkh/exec";
 
   // كل كام ثانية يحدّث لوحة الشرف لوحده (30 ثانية = دقيقة)
   const REFRESH_SECONDS = 30;
 
   // رابط امتحان الدرس (رابط Google Form بتاعك)
-  const EXAM_LINK = ""; // ⚠️ غيّر ده برابط الفورم بتاعك
+  const EXAM_LINK = "https://forms.gle/qq9M1BjtwSXu6zqv8"; // ⚠️ غيّر ده برابط الفورم بتاعك
 
   // رابط جروب الواتساب
   const WHATSAPP_LINK = "https://chat.whatsapp.com/LqvZm9gIEJ0BXa2NYoEBuT";
 
   // آية اليوم — غيّرها كل درس
-  const VERSE_TEXT = "اُنْظُرُوا الآنَ! أَنَا أَنَا هُوَ وَلَيْسَ إِلَهٌ مَعِي";
-  const VERSE_REF = "تثنية 32 : 39";
+  const VERSE_TEXT = "مُفْتَدِينَ الْوَقْتَ لأَنَّ الأَيَّامَ شِرِّيرَةٌ";
+  const VERSE_REF = "أفسس 5 : 16";
 
   // التنبيهات المهمة — ضيف/امسح أسطر زي ما تحب
   const ANNOUNCEMENTS = [
