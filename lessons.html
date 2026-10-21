@@ -44,11 +44,14 @@
   .scroll-sky {
     position: fixed;
     inset: 0 0 auto 0;
-    height: 560px;
+        height: 680px;
     z-index: -1;
     pointer-events: none;
     overflow: hidden;
-    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 52%, #f7f1e7 100%);
+    /* السماء بتتلاشى لشفاف بدل ما تنتهي بلون كريمي صلب، علشان ميبقاش فيه خط أبيض */
+    background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 50%, rgba(255,253,249,0) 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
     transform: translate3d(0, var(--sky-y, 0px), 0);
     will-change: transform;
   }
@@ -454,10 +457,18 @@
     {
       title: "ساعتك كام",
       subtitle: "إدارة الوقت",
-      verseText: "",
-      verseRef: "",
-      summary: "",
-      images: [],
+      verseText: "مُفتَدِينَ الوَقتَ لأنَّ الأيَّامَ شِرِّيرَةٌ",
+      verseRef: "أفسس 5 : 16",
+      summary: `الوقت كنز أعطاه لنا ربنا، وكلنا معانا نفس الـ 24 ساعة، والفرق في إزاي بنستغلها. وكلمة Time فيها 4 حروف، كل حرف بيعلمنا حاجة:
+
+T = Treasure (كنز): من قصة يوسف اتعلمنا نخطط لوقتنا. يوسف عرف يستغل وقته صح، وحدد أهدافه، وكتب خطوات لتحقيقها، فخزن القمح في سنين الشبع وأنقذ مصر من الجوع.
+
+I = Invest (استثمار): الوقت وزنة أعطاها ربنا لكل واحد مننا، ولازم نستثمرها ومنضيعهاش.
+
+M = Method (طريقة): نبدأ بالأمور الأهم والأكبر الأول وبعدين الأقل أهمية، زي ما بومبا بنى البرج من المكعبات الكبيرة.
+
+E = Effect (تأثير): الوقت زي قرص الفوار، بيذوب ومش بيرجع، لكن تأثيره لسه موجود وبيفضل معانا طول حياتنا.`,
+      images: ["Time.jpg"],
       videos: []
     },
     {
