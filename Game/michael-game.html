@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>لعبة الملاك ميخائيل — فصل مار جرجس سنة 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="game-styles.css">
+<style>
+/* Game-specific styles */
+.game-hero {
+  text-align: center;
+  margin-top: 20px;
+  padding: 20px;
+}
+.game-hero-icon {
+  font-size: 64px;
+  margin-bottom: 12px;
+}
+.game-hero h1 {
+  font-family: 'Amiri', serif;
+  font-size: clamp(28px, 4vw, 42px);
+  color: var(--maroon-deep);
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+.game-hero p {
+  color: var(--ink-soft);
+  font-size: clamp(14px, 1.8vw, 16px);
+  margin: 0;
+}
+.word-search-grid {
+  display: grid;
+  gap: 4px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.ws-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.ws-cell:hover {
+  border-color: var(--gold);
+  background: var(--angel-gold-light);
+}
+.ws-cell.selected {
+  background: var(--gold);
+  border-color: var(--gold-bright);
+  color: var(--maroon-deep);
+}
+.ws-cell.success {
+  background: var(--peace-green-light);
+  border-color: var(--peace-green);
+  animation: pulse 0.5s ease;
+}
+.word-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.word-item {
+  padding: 8px 16px;
+  background: var(--paper-2);
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+.word-item.found {
+  background: var(--peace-green-light);
+  border-color: var(--peace-green);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.verse-container {
+  font-family: 'Amiri', serif;
+  font-size: clamp(18px, 2.5vw, 24px);
+  line-height: 2;
+  text-align: center;
+  margin: 20px 0;
+}
+.blank-slot {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 3px dashed var(--maroon);
+  padding: 0 8px 4px;
+  margin: 0 4px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.blank-slot:hover {
+  background: var(--angel-gold-light);
+  border-color: var(--gold);
+}
+.blank-slot.filled {
+  border-style: solid;
+  background: var(--angel-gold-light);
+}
+.blank-slot.correct {
+  border-color: var(--peace-green);
+  background: var(--peace-green-light);
+}
+.blank-slot.wrong {
+  border-color: #e74c3c;
+  background: #fadbd8;
+  animation: shake 0.5s ease;
+}
+.verse-ref {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--gold);
+  font-weight: 700;
+}
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.word-chip {
+  padding: 8px 16px;
+  background: var(--maroon);
+  color: #fdf3e6;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.word-chip:hover {
+  background: var(--maroon-deep);
+  transform: translateY(-2px);
+}
+.options-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: right;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  transform: translateX(-4px);
+}
+.option-btn:active:not(:disabled) {
+  transform: translateX(-2px);
+}
+.option-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.option-btn.correct {
+  border-color: var(--peace-green);
+  background: var(--peace-green-light);
+}
+.option-btn.wrong {
+  border-color: #e74c3c;
+  background: #fadbd8;
+}
+.option-letter {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--maroon);
+  color: #fdf3e6;
+  border-radius: 50%;
+  font-weight: 700;
+}
+.option-text {
+  flex: 1;
+  font-weight: 600;
+}
+.explanation {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.explanation.correct {
+  background: var(--peace-green-light);
+  border: 2px solid var(--peace-green);
+}
+.explanation.wrong {
+  background: #fadbd8;
+  border: 2px solid #e74c3c;
+}
+.week-tracker {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+.day-box {
+  background: var(--paper-2);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.day-box:hover {
+  border-color: var(--gold);
+}
+.day-box.checked {
+  background: var(--peace-green-light);
+  border-color: var(--peace-green);
+}
+.day-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+.day-check {
+  font-size: 20px;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+@media (max-width: 620px) {
+  .word-search-grid {
+    grid-template-columns: repeat(10, 1fr);
+  }
+  .ws-cell {
+    font-size: 14px;
+  }
+  .week-tracker {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+  <div class="scroll-sky" aria-hidden="true">
+    <span class="sky-cloud c1"></span>
+    <span class="sky-cloud c2"></span>
+    <span class="sky-cloud c3"></span>
+  </div>
+
+<div class="identity-band">
+  <span class="cross">✝</span>
+  <div class="church">كاتدرائية الشهيد العظيم مار جرجس بمدينة العاشر من رمضان</div>
+  <div class="class">خدمة مرحلة الطفولة — فصل الشهيد العظيم مار جرجس سنة 6</div>
+</div>
+
+<div class="nav-row">
+  <a class="nav-pill" href="../dashboard.html">🏠 الرئيسية</a>
+  <a class="nav-pill active" href="#">👼 لعبة ميخائيل</a>
+  <a class="nav-pill" href="leaderboard.html">🏆 لوحة الشرف</a>
+</div>
+
+<div class="game-wrap">
+  <!-- Progress Bar -->
+  <div class="progress-bar" style="margin-top: 20px;">
+    <div class="progress-fill" id="progress-fill" style="width: 20%"></div>
+  </div>
+  <div class="level-progress">
+    <div class="level-dot active" data-level="1"></div>
+    <div class="level-dot" data-level="2"></div>
+    <div class="level-dot" data-level="3"></div>
+    <div class="level-dot" data-level="4"></div>
+    <div class="level-dot" data-level="5"></div>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div class="screen active" id="intro-screen">
+    <div class="game-hero">
+      <div class="game-hero-icon">👼</div>
+      <h1>لعبة الملاك ميخائيل</h1>
+      <p>رحلة حماية مع رئيس السماء — 12 من كل شهر قبطي</p>
+    </div>
+
+    <div class="card card-heaven mt-24">
+      <div class="verse-display">
+        <p class="verse-text">من قوة ميخائيل ومحبته للبشرية يظهر لنا قيمة القوة الروحية الصادقة</p>
+        <span class="verse-ref">يهوذا 9</span>
+      </div>
+    </div>
+
+    <div class="card mt-24">
+      <h3 class="text-center text-maroon mb-16">🎮 عن اللعبة</h3>
+      <p style="line-height: 1.8; color: var(--ink-soft);">
+        في هذه اللعبة هتسافر مع الملاك ميخائيل في رحلة روحية لتتعرف على قوته وحمايته للبشرية.
+        هتعمل 4 تحديات مختلفة بناءً على دروس من أوراق العمل المقدسة عن الملاك ميخائيل.
+      </p>
+      <div style="display: grid; gap: 12px; margin-top: 20px;">
+        <div class="flex gap-12" style="align-items: center;">
+          <span style="font-size: 24px;">🔤</span>
+          <div><strong>المرحلة 1:</strong> البحث عن الكلمات المقدسة</div>
+        </div>
+        <div class="flex gap-12" style="align-items: center;">
+          <span style="font-size: 24px;">📖</span>
+          <div><strong>المرحلة 2:</strong> حفظ آية من المزامير</div>
+        </div>
+        <div class="flex gap-12" style="align-items: center;">
+          <span style="font-size: 24px;">❓</span>
+          <div><strong>المرحلة 3:</strong> أسئلة من الكتاب المقدس</div>
+        </div>
+        <div class="flex gap-12" style="align-items: center;">
+          <span style="font-size: 24px;">💪</span>
+          <div><strong>المرحلة 4:</strong> قوة بدون إهانة</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-24">
+      <form id="player-name-form">
+        <div style="display: grid; gap: 12px; max-width: 400px; margin: 0 auto;">
+          <input type="text" id="player-name" placeholder="اكتب اسمك هنا..." required
+                 style="padding: 14px 20px; border: 2px solid var(--line); border-radius: 12px; font-family: var(--font-ui); font-size: 16px;">
+          <input type="text" id="player-class" placeholder="الفصل (اختياري)"
+                 style="padding: 14px 20px; border: 2px solid var(--line); border-radius: 12px; font-family: var(--font-ui); font-size: 16px;">
+          <button type="submit" class="btn btn-primary">
+            <span class="btn-icon">🚀</span> ابدأ اللعبة
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- LEVEL 1: WORD SEARCH -->
+  <div class="screen" id="level-0">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>المرحلة 1: البحث عن الكلمات</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="card card-heaven">
+      <p class="text-center" style="color: var(--ink-soft); margin-bottom: 16px;">
+        ابحث عن الكلمات التالية في الشبكة:
+      </p>
+      <div id="word-list" class="word-list"></div>
+      <div id="word-search-grid" class="word-search-grid"></div>
+      <button class="btn btn-primary btn-next-level mt-24" style="margin: 20px auto; display: block;">
+        <span class="btn-icon">➡️</span> المرحلة التالية
+      </button>
+    </div>
+  </div>
+
+  <!-- LEVEL 2: VERSE MEMORY -->
+  <div class="screen" id="level-1">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>المرحلة 2: حفظ الآية المقدسة</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="card card-heaven">
+      <div class="verse-display">
+        <p class="verse-text">الرب يقاتل عنكم وأنتم تصمتون</p>
+        <span class="verse-ref">خروج 14 : 14</span>
+      </div>
+      <p class="text-center" style="margin: 20px 0 16px; color: var(--ink-soft);">
+        السؤال: <strong>الرب يقاتل عنكم</strong> — أكمل الآية بالكلمات التالية:
+      </p>
+      <div class="verse-container">
+        <div id="verse-container"></div>
+      </div>
+      <div id="word-bank" class="word-bank"></div>
+      <button class="btn btn-primary btn-next-level mt-24" style="margin: 20px auto; display: block;">
+        <span class="btn-icon">➡️</span> المرحلة التالية
+      </button>
+    </div>
+  </div>
+
+  <!-- LEVEL 3: BIBLE QUIZ -->
+  <div class="screen" id="level-2">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>المرحلة 3: أسئلة من الكتاب المقدس</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="card">
+      <div id="quiz-container"></div>
+    </div>
+  </div>
+
+  <!-- LEVEL 4: STRENGTH CHALLENGE -->
+  <div class="screen" id="level-3">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>المرحلة 4: قوة بدون إهانة</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="card card-heaven">
+      <div id="challenge-container"></div>
+    </div>
+  </div>
+
+  <!-- VICTORY SCREEN -->
+  <div class="screen" id="victory-screen">
+    <div class="game-hero">
+      <div class="game-hero-icon">🎉</div>
+      <h1>برافو عليكم يا أبطال سنة 6 الشطار!</h1>
+      <p>أتممت جميع المراحل بنجاح 👼</p>
+    </div>
+    <div class="card card-gold text-center">
+      <div style="font-size: 48px; margin-bottom: 12px;">🏆</div>
+      <h3 style="color: var(--maroon-deep); margin-bottom: 8px;">مبروك!</h3>
+      <p style="color: var(--ink-soft);">حافظت على قوة الملاك ميخائيل الروحية</p>
+      <button class="btn btn-primary mt-16" style="margin: 20px auto; display: block;" id="submit-btn">
+        <span class="btn-icon">💾</span> تسجيل النتيجة
+      </button>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <span class="cross">✝</span> كاتدرائية الشهيد العظيم مار جرجس بمدينة العاشر من رمضان <span class="cross">✝</span>
+    <br>خدمة مرحلة الطفولة — فصل الشهيد العظيم مار جرجس سنة 6
+  </footer>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-icon">🎉</div>
+    <h3>عنوان الرسالة</h3>
+    <p>محتوى الرسالة</p>
+    <button class="btn btn-primary" id="modal-close">تمام</button>
+  </div>
+</div>
+
+<script src="game-engine.js"></script>
+<script src="levels/level1-wordsearch.js"></script>
+<script src="levels/level2-verse.js"></script>
+<script src="levels/level3-quiz.js"></script>
+<script src="levels/level4-challenge.js"></script>
+</body>
+</html>

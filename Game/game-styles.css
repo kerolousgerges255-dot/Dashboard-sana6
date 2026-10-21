@@ -1,0 +1,456 @@
+/* ============================================================
+   Archangel Michael Game - Shared Styles
+   Matches Dashboard-sana6 design system
+   ============================================================ */
+
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Dashboard colors */
+  --paper: #fffdf9;
+  --paper-2: #f6efe3;
+  --maroon: #7a1530;
+  --maroon-deep: #4d0d1f;
+  --maroon-bright: #a5203f;
+  --gold: #c9a86a;
+  --gold-bright: #e3c589;
+  --ink: #2b1015;
+  --ink-soft: #6b4a52;
+  --line: #e8d9c3;
+  --shadow: rgba(74, 13, 31, 0.14);
+
+  /* Game-specific colors */
+  --heaven-blue: #bce8fb;
+  --heaven-light: #dff5ff;
+  --angel-gold: #f5d76e;
+  --angel-gold-light: #fdf3e6;
+  --peace-green: #6fb177;
+  --peace-green-light: #e8f5e9;
+  --victory-purple: #9b59b6;
+  --victory-purple-light: #f3e5f5;
+
+  /* Typography */
+  --font-ui: 'Cairo', sans-serif;
+  --font-display: 'Amiri', serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+body {
+  position: relative;
+  isolation: isolate;
+  background: var(--paper);
+  padding: 0 0 40px;
+}
+
+/* ============================================================
+   Animated Sky Background (shared with dashboard)
+   ============================================================ */
+.scroll-sky {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 700px;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: linear-gradient(180deg, #bce8fb 0%, #dff5ff 50%, rgba(255,253,249,0) 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+  transform: translate3d(0, var(--sky-y, 0px), 0);
+  will-change: transform;
+}
+.scroll-sky::before {
+  content: '';
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  right: 8%;
+  top: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,231,143,.98) 0 25%, rgba(255,224,132,.48) 45%, rgba(255,224,132,0) 72%);
+  filter: blur(1px);
+}
+.scroll-sky::after {
+  content: '';
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  bottom: -70px;
+  height: 190px;
+  background:
+    radial-gradient(ellipse 360px 95px at 7% 100%, rgba(111,177,119,.24), transparent 70%),
+    radial-gradient(ellipse 420px 105px at 96% 100%, rgba(111,177,119,.20), transparent 70%);
+}
+.sky-cloud {
+  position: absolute;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  filter: blur(.3px);
+  box-shadow: 38px 7px 0 7px rgba(255,255,255,.66), -32px 8px 0 3px rgba(255,255,255,.62);
+}
+.sky-cloud.c1 { width: 170px; left: 7%; top: 135px; }
+.sky-cloud.c2 { width: 210px; left: 42%; top: 215px; opacity: .72; }
+.sky-cloud.c3 { width: 135px; right: 4%; top: 285px; opacity: .68; }
+
+@media (max-width: 760px) {
+  .scroll-sky { height: 500px; }
+  .scroll-sky::before { right: -5%; top: 75px; }
+  .sky-cloud.c2 { left: 34%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-sky { transform: none !important; }
+}
+
+/* ============================================================
+   Identity Band (shared with dashboard)
+   ============================================================ */
+.identity-band {
+  background: linear-gradient(120deg, var(--maroon-deep), var(--maroon) 55%, var(--maroon-deep));
+  color: #fbeee0;
+  padding: env(safe-area-inset-top, 14px) 20px 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.identity-band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 14px);
+  pointer-events: none;
+}
+.identity-band .cross { color: var(--gold-bright); font-size: 16px; display: block; margin-bottom: 4px; }
+.identity-band .church { font-weight: 800; font-size: clamp(15px, 2.4vw, 20px); letter-spacing: 0.2px; }
+.identity-band .class { font-size: clamp(12px, 1.6vw, 14.5px); color: #e9c9a9; margin-top: 4px; font-weight: 600; }
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+.nav-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 16px 0;
+}
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1.5px solid var(--line);
+  color: var(--ink-soft);
+  background: var(--paper);
+}
+.nav-pill.active {
+  background: var(--maroon);
+  color: #fdf3e6;
+  border-color: var(--maroon);
+}
+.nav-pill:hover:not(.active) {
+  border-color: var(--gold);
+  color: var(--maroon-deep);
+}
+
+/* ============================================================
+   Game Container
+   ============================================================ */
+.game-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+/* ============================================================
+   Screen Management
+   ============================================================ */
+.screen {
+  display: none;
+}
+.screen.active {
+  display: block;
+  animation: screenIn 0.4s ease;
+}
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   Section Titles
+   ============================================================ */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 40px 0 16px;
+}
+.section-title .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--maroon);
+  flex-shrink: 0;
+}
+.section-title h2 {
+  font-size: clamp(17px, 2.2vw, 21px);
+  font-weight: 800;
+  margin: 0;
+  color: var(--maroon-deep);
+}
+.section-title .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ============================================================
+   Buttons (shared with dashboard)
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(14px, 1.6vw, 16px);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-decoration: none;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+.btn-primary {
+  background: linear-gradient(155deg, var(--maroon), var(--maroon-deep));
+  color: #fdf3e6;
+  box-shadow: 0 6px 18px var(--shadow);
+}
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px var(--shadow);
+}
+.btn-secondary {
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--line);
+}
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px var(--shadow);
+}
+.btn-gold {
+  background: linear-gradient(155deg, var(--gold), #b8965a);
+  color: var(--maroon-deep);
+  box-shadow: 0 6px 18px rgba(201,168,106,0.3);
+}
+.btn-gold:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(201,168,106,0.4);
+}
+.btn-icon { font-size: 1.2em; }
+
+/* ============================================================
+   Cards
+   ============================================================ */
+.card {
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 10px 24px rgba(74,13,31,.06);
+}
+.card-gold {
+  border-color: var(--gold);
+  background: linear-gradient(160deg, #fffdf9 0%, #fef9f0 100%);
+}
+.card-heaven {
+  border-color: var(--heaven-blue);
+  background: linear-gradient(160deg, #f0f9ff 0%, #fffdf9 100%);
+}
+
+/* ============================================================
+   Verse Display
+   ============================================================ */
+.verse-display {
+  background: linear-gradient(155deg, var(--maroon), var(--maroon-deep));
+  color: #fdf3e6;
+  border-radius: 18px;
+  padding: clamp(20px, 4vw, 32px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 14px 34px var(--shadow);
+}
+.verse-display::before {
+  content: "”";
+  position: absolute;
+  top: -20px;
+  right: 10px;
+  font-family: var(--font-display);
+  font-size: 180px;
+  color: rgba(255,255,255,0.05);
+  line-height: 1;
+  pointer-events: none;
+}
+.verse-display .verse-text {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 3vw, 26px);
+  line-height: 1.8;
+  font-weight: 700;
+  margin: 0 0 12px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.verse-display .verse-ref {
+  font-size: clamp(12px, 1.4vw, 14px);
+  color: var(--gold-bright);
+  font-weight: 700;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  padding-top: 12px;
+  display: inline-block;
+}
+
+/* ============================================================
+   Progress Bar
+   ============================================================ */
+.progress-bar {
+  height: 8px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* ============================================================
+   Level Progress Indicator
+   ============================================================ */
+.level-progress {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.level-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--line);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+.level-dot.active {
+  background: var(--gold);
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 0 4px rgba(201,168,106,0.2);
+}
+.level-dot.completed {
+  background: var(--peace-green);
+  border-color: var(--peace-green-light);
+}
+.level-dot::after {
+  content: attr(data-level);
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Modal
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 16, 21, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal-card {
+  background: var(--paper);
+  border-radius: 22px;
+  border: 2px solid var(--gold);
+  padding: 34px 28px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+  transform: translateY(14px) scale(0.96);
+  transition: transform 0.3s cubic-bezier(.2,.9,.25,1.1);
+}
+.modal-overlay.open .modal-card { transform: translateY(0) scale(1); }
+.modal-card .modal-icon { font-size: 48px; margin-bottom: 12px; }
+.modal-card h3 { margin: 0 0 10px; font-size: 19px; color: var(--maroon-deep); font-weight: 800; }
+.modal-card p { margin: 0 0 20px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.8; }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.page-footer {
+  text-align: center;
+  margin-top: 44px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+.page-footer .cross { color: var(--gold); margin: 0 4px; }
+
+/* ============================================================
+   Reduced Motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   Utility Classes
+   ============================================================ */
+.text-center { text-align: center; }
+.text-gold { color: var(--gold); }
+.text-maroon { color: var(--maroon-deep); }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-16 { margin-bottom: 16px; }
+.hidden { display: none !important; }
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
