@@ -233,6 +233,10 @@ const Game = (() => {
     }
   }
 
+  function showVictory() {
+    showScreen('victory-screen');
+  }
+
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
@@ -330,6 +334,7 @@ const Game = (() => {
     submitToLeaderboard,
     showModal,
     hideModal,
+    showVictory,
     escapeHtml
   };
 })();
